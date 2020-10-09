@@ -19,6 +19,7 @@ export class UserService {
     try {
       userData.id = this.index;
       this.users.push(userData);
+      this.index += 1;
       return userData;
     } catch (error) {
       throw error;
@@ -48,7 +49,7 @@ export class UserService {
     try {
 
       const user = this.users.find((user: User) => {
-        return user.id = userId;
+        return user.id === userId;
       })
       
       return user;
@@ -57,17 +58,15 @@ export class UserService {
     }
   }
 
-  public async updateUserById(userData: User): Promise<void> {
+  public async updateUserById(userId: number, userData: User): Promise<void> {
     try {
-
       this.users.forEach((user: User) => {
-        if (user.id === userData.id) {
+        if (user.id === userId) {
           user.email = userData.email;
           user.name = userData.name;
           user.phone = userData.phone;
         }
       })
-
     } catch (error) {
       throw error;
     }

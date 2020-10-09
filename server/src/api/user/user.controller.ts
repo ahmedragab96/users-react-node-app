@@ -62,7 +62,7 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = +req.params.userId;
 
-    const user = userService.getUserById(userId);
+    const user = await userService.getUserById(userId);
 
     return res.status(httpStatus.CREATED).json({
       code: httpStatus.CREATED,
@@ -77,9 +77,9 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userData = req.body;
-    userData.userId = +req.params.userId;
+    const userId = +req.params.userId;
 
-    await userService.updateUserById(userData);
+    await userService.updateUserById(userId, userData);
 
     return res.status(httpStatus.CREATED).json({
       code: httpStatus.CREATED,

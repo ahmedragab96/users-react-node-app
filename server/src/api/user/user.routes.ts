@@ -16,30 +16,6 @@ Router.route("/")
    * @swagger
    * /users:
    *   get:
-   *     parameters:
-   *       - in: query
-   *         name: pageNumber
-   *         schema:
-   *           type: number
-   *       - in: query
-   *         name: pageSize
-   *         schema:
-   *           type: number
-   *       - in: query
-   *         name: filterBy
-   *         schema:
-   *            type: string
-   *            enum: [membershipId, mobileNumber]
-   *       - in: query
-   *         name: filterValue
-   *         schema:
-   *           type: string
-   *       - in: query
-   *         name: registrationStatus
-   *         schema:
-   *           type: string
-   *           enum: [registered, preRegistered]
-   *           default: registered
    *     tags:
    *       - User
    *     summary: Gets users list
@@ -58,17 +34,31 @@ Router.route("/")
    *                 data:
    *                   type: object
    *                   example:
-   *                     firstName: lorem
-   *                     lastName: lorem
-   *                     profilePicture: image url
-   *                     phoneNumber: 01234567890
-   *                     createdAt: 2019-03-19T12:02:22.151Z
-   *                     userId: 1
-   *                     email: user@user.com
-   *                     membershipId: WDC_1
+   *                     name: Ahmed
+   *                     phone: Ragab
+   *                     email: ahmed.ragab@test.com
+   *                     id: 12
    */
   .get(
     userController.getUsers,
+  )
+  .post(
+    celebrate(validation.addUserVerificationSchema),
+    userController.createUser,
+  );
+
+  Router.route("/:userId")
+  .get(
+    celebrate(validation.getUserVerificationSchema),
+    userController.getUserById,
+  )
+  .put(
+    celebrate(validation.updateUserVerificationSchema),
+    userController.updateUser,
+  )
+  .delete(
+    celebrate(validation.deleteUserVerificationSchema),
+    userController.deleteUser,
   );
 
 export {
