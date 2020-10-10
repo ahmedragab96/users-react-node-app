@@ -5,15 +5,18 @@ import {
   Route,
 } from 'react-router-dom';
 import Layout from './components/layout';
+import { UsersProvider } from './contextProvider/usersProvider/userProvider';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Route
-        path='/'
-        component={Layout}
-      />
-    </BrowserRouter>
+    <UsersProvider>
+      <BrowserRouter>
+        <Route
+          path='/'
+          component={Layout}
+        />
+      </BrowserRouter>
+    </UsersProvider>
   );
 }
 

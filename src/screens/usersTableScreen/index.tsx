@@ -1,7 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './styles.module.scss';
+import { UserContext } from '../../contextProvider/usersProvider/userProvider';
 
 const UserTableScreen = () => {
+  const {
+    createUser,
+    deleteUser,
+    getUsers,
+    isLoadingUsers,
+    selectedUser,
+    setSelectedUser,
+    updateUser,
+    users,
+  } = useContext(UserContext);
+  useEffect(() => {
+    async function loadData() {
+      await getUsers!();
+    }
+
+    loadData();
+  }, []);
   return (
     <div
      className={styles.homeContainer}
