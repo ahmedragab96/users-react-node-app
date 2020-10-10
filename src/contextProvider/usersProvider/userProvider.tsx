@@ -12,9 +12,9 @@ export const UsersProvider: React.FC<Props> = (props: Props) => {
   const getUsers = async () => {
     try {
       setIsLoadingUsers(true);
-      const response = await instance.get('/users');
-      if (response.data.length) {
-        setUsers(response.data);
+      const response = await instance.get('/users');     
+      if (response.data.data.length) {
+        setUsers(response.data.data);
       }
     } catch (error) {
       console.log(error);

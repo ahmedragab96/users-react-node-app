@@ -23,8 +23,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Router = void 0;
+const celebrate_1 = require("celebrate");
 const express_1 = __importDefault(require("express"));
 const userController = __importStar(require("./user.controller"));
+const validation = __importStar(require("./user.validation"));
 const Router = express_1.default.Router();
 exports.Router = Router;
 Router.route("/")
@@ -32,30 +34,6 @@ Router.route("/")
      * @swagger
      * /users:
      *   get:
-     *     parameters:
-     *       - in: query
-     *         name: pageNumber
-     *         schema:
-     *           type: number
-     *       - in: query
-     *         name: pageSize
-     *         schema:
-     *           type: number
-     *       - in: query
-     *         name: filterBy
-     *         schema:
-     *            type: string
-     *            enum: [membershipId, mobileNumber]
-     *       - in: query
-     *         name: filterValue
-     *         schema:
-     *           type: string
-     *       - in: query
-     *         name: registrationStatus
-     *         schema:
-     *           type: string
-     *           enum: [registered, preRegistered]
-     *           default: registered
      *     tags:
      *       - User
      *     summary: Gets users list
@@ -74,14 +52,15 @@ Router.route("/")
      *                 data:
      *                   type: object
      *                   example:
-     *                     firstName: lorem
-     *                     lastName: lorem
-     *                     profilePicture: image url
-     *                     phoneNumber: 01234567890
-     *                     createdAt: 2019-03-19T12:02:22.151Z
-     *                     userId: 1
-     *                     email: user@user.com
-     *                     membershipId: WDC_1
+     *                     name: Ahmed
+     *                     phone: Ragab
+     *                     email: ahmed.ragab@test.com
+     *                     id: 12
      */
-    .get(userController.getUsers);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlci5yb3V0ZXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvYXBpL3VzZXIvdXNlci5yb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUdBLHNEQUVpQjtBQUVqQixrRUFBb0Q7QUFJcEQsTUFBTSxNQUFNLEdBQWtCLGlCQUFPLENBQUMsTUFBTSxFQUFFLENBQUM7QUErRDdDLHdCQUFNO0FBN0RSLE1BQU0sQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDO0lBQ2Y7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztPQXNERztLQUNGLEdBQUcsQ0FDRixjQUFjLENBQUMsUUFBUSxDQUN4QixDQUFDIn0=
+    .get(userController.getUsers)
+    .post(celebrate_1.celebrate(validation.addUserVerificationSchema), userController.createUser);
+Router.route("/:userId")
+    .get(celebrate_1.celebrate(validation.getUserVerificationSchema), userController.getUserById)
+    .put(celebrate_1.celebrate(validation.updateUserVerificationSchema), userController.updateUser)
+    .delete(celebrate_1.celebrate(validation.deleteUserVerificationSchema), userController.deleteUser);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlci5yb3V0ZXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvYXBpL3VzZXIvdXNlci5yb3V0ZXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHlDQUVtQjtBQUNuQixzREFFaUI7QUFFakIsa0VBQW9EO0FBQ3BELDhEQUFnRDtBQUdoRCxNQUFNLE1BQU0sR0FBa0IsaUJBQU8sQ0FBQyxNQUFNLEVBQUUsQ0FBQztBQXFEN0Msd0JBQU07QUFuRFIsTUFBTSxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUM7SUFDZjs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7T0EwQkc7S0FDRixHQUFHLENBQ0YsY0FBYyxDQUFDLFFBQVEsQ0FDeEI7S0FDQSxJQUFJLENBQ0gscUJBQVMsQ0FBQyxVQUFVLENBQUMseUJBQXlCLENBQUMsRUFDL0MsY0FBYyxDQUFDLFVBQVUsQ0FDMUIsQ0FBQztBQUVGLE1BQU0sQ0FBQyxLQUFLLENBQUMsVUFBVSxDQUFDO0tBQ3ZCLEdBQUcsQ0FDRixxQkFBUyxDQUFDLFVBQVUsQ0FBQyx5QkFBeUIsQ0FBQyxFQUMvQyxjQUFjLENBQUMsV0FBVyxDQUMzQjtLQUNBLEdBQUcsQ0FDRixxQkFBUyxDQUFDLFVBQVUsQ0FBQyw0QkFBNEIsQ0FBQyxFQUNsRCxjQUFjLENBQUMsVUFBVSxDQUMxQjtLQUNBLE1BQU0sQ0FDTCxxQkFBUyxDQUFDLFVBQVUsQ0FBQyw0QkFBNEIsQ0FBQyxFQUNsRCxjQUFjLENBQUMsVUFBVSxDQUMxQixDQUFDIn0=

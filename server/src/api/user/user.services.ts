@@ -5,7 +5,32 @@ import {
 export class UserService {
   private static instance: UserService;
 
-  private users: User[] = [];
+  private users: User[] = [
+    {
+      email: 'hello@test.com',
+      phone: '013284382974892',
+      name: 'Ahmed Ragab',
+      id: 1
+    },
+    {
+      email: 'hello@test.com',
+      phone: '013284382974892',
+      name: 'Ahmed Ragab',
+      id: 2
+    },
+    {
+      email: 'hello@test.com',
+      phone: '013284382974892',
+      name: 'Ahmed Ragab',
+      id: 3
+    },
+    {
+      email: 'hello@test.com',
+      phone: '013284382974892',
+      name: 'Ahmed Ragab',
+      id: 4
+    }
+  ];
   private index: number = 1;
 
   public static get Instance() {
