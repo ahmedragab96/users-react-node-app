@@ -57,12 +57,12 @@ const AddUserScreen: React.FC = () => {
         label="Email"
         value={email}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {  
+          setEmail(event.target.value)
           if (!validateEmail(event.target.value)) {
             setEmailError(true);
           } else {
             setEmailError(false);
           }
-          setEmail(event.target.value)
         }}
         variant="outlined"
         style={{
