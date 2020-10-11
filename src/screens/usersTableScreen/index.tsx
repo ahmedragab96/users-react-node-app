@@ -17,6 +17,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { useHistory } from 'react-router-dom';
+import {
+  validateEmail,
+  validatePhone,
+} from '../../helperFunctions/index';
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +46,8 @@ const UserTableScreen: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [emailError, setEmailError ] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
   const classes = useStyles();
   const history = useHistory();
   const {
@@ -68,6 +74,9 @@ const UserTableScreen: React.FC = () => {
   }
 
   const updatingUser = async (user: User) => {
+    if (updatingRow > 0 && (emailError || phoneError)) {
+      return;
+    }
     if (updatingRow > 0) {
       const userData: User = {
         name,
@@ -158,7 +167,17 @@ const UserTableScreen: React.FC = () => {
                     id="standard-basic"
                     defaultValue={user.email}
                     disabled={updatingRow !== user.id}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setEmail(event.target.value)
+                      if (!validateEmail(event.target.value)) {
+                        setEmailError(true);
+                      } else {
+                        setEmailError(false);
+                      }
+                    }}
+                    error={emailError && updatingRow === user.id!}
+                    required
+                    helperText={emailError && updatingRow === user.id! ? 'Please enter a valid email!' : null}
                   />
                 </TableCell>
                 <TableCell
@@ -169,7 +188,17 @@ const UserTableScreen: React.FC = () => {
                     id="standard-basic"
                     defaultValue={user.phone}
                     disabled={updatingRow !== user.id}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPhone(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setPhone(event.target.value)
+                      if (!validatePhone(event.target.value)) {
+                        setPhoneError(true);
+                      } else {
+                        setPhoneError(false);
+                      }
+                    }}
+                    error={phoneError && updatingRow === user.id!}
+                    required
+                    helperText={phoneError && updatingRow === user.id! ? 'Please enter a valid phone number!' : null}
                   />
                 </TableCell>
                 <TableCell align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>

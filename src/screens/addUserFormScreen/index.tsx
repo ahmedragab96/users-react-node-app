@@ -5,6 +5,10 @@ import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import { User } from '../../contextProvider/usersProvider/types';
 import { useHistory } from 'react-router-dom';
+import {
+  validateEmail,
+  validatePhone,
+} from '../../helperFunctions/index';
 
 const AddUserScreen: React.FC = () => {
   const [name, setName] = useState('');
@@ -18,6 +22,9 @@ const AddUserScreen: React.FC = () => {
   } = useContext(UserContext);
 
   const addUser = async () => {
+    if (emailError || phoneError) {
+      return;
+    }
     const newUser: User = {
       name,
       email,
@@ -26,16 +33,6 @@ const AddUserScreen: React.FC = () => {
 
     await createUser!(newUser);
     history.push('/');
-  }
-
-  const validateEmail = (testEmail: string) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(String(testEmail).toLowerCase());
-  }
-
-  const validatePhone = (testPhone: string) => {
-    const re = /^[0-9\b]+$/;
-    return re.test(testPhone);
   }
 
   return (
